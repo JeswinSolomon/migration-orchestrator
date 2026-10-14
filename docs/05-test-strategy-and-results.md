@@ -8,13 +8,13 @@ Status date: 2026-10-14. Everything below was run on a developer machine with an
 | Layer | Tool | Count | What it proves |
 |---|---|---|---|
 | Unit | JUnit (`LegacyValueParserTest`, `RunStateTest`) | 8 | Value parsing, state-machine rules |
-| Service / integration | JUnit + SpringBootTest + MockMvc + H2 | 30 | Loader, quarantine, reconciliation, mapping gate, shadow diff, cutover pre-checks, rollback drill, metrics, AI-client retry, authentication and roles, tenant isolation, concurrent transitions, API contract |
+| Service / integration | JUnit + SpringBootTest + MockMvc + H2 | 31 | Loader, quarantine, reconciliation, mapping gate, shadow diff, cutover pre-checks, rollback drill, metrics, AI-client retry, authentication and roles, tenant isolation, concurrent transitions, API contract, data profiling |
 | AI service | pytest | 27 | Mapping guardrails, agent tools, evals, LLM HTTP round trip, endpoint errors |
 | Agent evals | `python -m app.agent.evals` | 16 scenarios | Root-cause accuracy 16/16, includes "UNKNOWN" and "NO_ISSUE" negatives |
-| Console | Vitest + Testing Library | 23 | Rendering, login gate, approval gate, error states, polling, diagnose panel, stepper |
+| Console | Vitest + Testing Library | 25 | Rendering, login gate, approval gate, error states, polling, diagnose panel, stepper |
 | End to end | Playwright (real browser) | 3 | Wrong password refused, create run, advance, pre-check failure, ask the agent, over 3 real services |
 
-Total automated checks: 38 Java + 27 Python + 23 console + 3 e2e = **91**, plus the 16-scenario eval.
+Total automated checks: 39 Java + 27 Python + 25 console + 3 e2e = **94**, plus the 16-scenario eval.
 
 ## 2. Test types and where they live
 

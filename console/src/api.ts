@@ -121,6 +121,16 @@ export const loadRun = (id: number) => request<unknown>(`${RUNS}/${id}/load`, { 
 export const getReconciliation = (id: number) => request<Reconciliation>(`${RUNS}/${id}/reconciliation`)
 export const getExceptions = (id: number) => request<MigrationException[]>(`${RUNS}/${id}/exceptions`)
 
+export interface ColumnProfile {
+  column: string
+  nullCount: number
+  nullPct: number
+  duplicateValues: number
+  formats: Record<string, number>
+}
+export interface Profile { files: { file: string; rows: number; columns: ColumnProfile[] }[] }
+export const getProfile = (id: number) => request<Profile>(`${RUNS}/${id}/profile`)
+
 export interface StoredMapping {
   SOURCE_COL: string
   TARGET_COL: string

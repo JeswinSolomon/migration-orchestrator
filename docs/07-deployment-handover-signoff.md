@@ -102,7 +102,7 @@ See test report section 5 (G1-G7) and security review findings S1-S9. The blocke
 |---|---|---|---|
 | 1 | Requirements agreed | `01-requirements.md` | Done |
 | 2 | Architecture and ADRs | `03-architecture.md` | Done |
-| 3 | Automated tests pass | `05-test-strategy-and-results.md` (91 checks + 16 evals) | Done on H2 |
+| 3 | Automated tests pass | `05-test-strategy-and-results.md` (94 checks + 16 evals) | Done on H2 |
 | 4 | Rollback drill rehearsed | `CutoverDrillTest`, `04-cutover-runbook.md` | Done on H2 |
 | 5 | Data reconciles | 66k-row run, sums tie out | Done on H2 |
 | 6 | Security review | `06-security-review.md` | Done, **not approved for real data** |

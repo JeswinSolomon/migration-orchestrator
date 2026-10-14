@@ -4,6 +4,7 @@ import {
   type MigrationException, type Reconciliation, type Run,
 } from './api'
 import DiagnosePanel from './DiagnosePanel'
+import ProfilePanel from './ProfilePanel'
 import StateStepper from './StateStepper'
 import { canRollback, nextState } from './runState'
 
@@ -82,6 +83,7 @@ export default function RunDetail({ runId, onChanged }: { runId: number; onChang
         )}
       </div>
 
+      <ProfilePanel runId={runId} />
       <DiagnosePanel runId={runId} lastError={error} />
 
       <h3>Reconciliation {recon && (recon.balanced
