@@ -1,0 +1,16 @@
+target/
+node_modules/
+dist/
+test-results/
+playwright-report/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+*.log
+.idea/
+.vscode/
+.env
+.env.*
+*.class
+e2e-run-diagnosis.png

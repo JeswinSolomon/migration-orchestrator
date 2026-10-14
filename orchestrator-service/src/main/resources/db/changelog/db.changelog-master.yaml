@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/001-business-tables.yaml
+  - include:
+      file: db/changelog/002-migration-control-tables.yaml
+  - include:
+      file: db/changelog/003-mapping.yaml

@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-borrower
+      author: jeswins
+      changes:
+        - createTable:
+            tableName: BORROWER
+            columns:
+              - column: {name: BORROWER_ID, type: NUMBER(19), autoIncrement: true, constraints: {primaryKey: true, nullable: false}}
+              - column: {name: TENANT_ID, type: VARCHAR2(50), constraints: {nullable: false}}
+              - column: {name: FULL_NAME, type: VARCHAR2(200), constraints: {nullable: false}}
+              - column: {name: EMAIL, type: VARCHAR2(200)}
+              - column: {name: PHONE, type: VARCHAR2(30)}
+              - column: {name: DOB, type: DATE}
+              - column: {name: CREATED_AT, type: TIMESTAMP, defaultValueComputed: SYSTIMESTAMP}
+  - changeSet:
+      id: 001-loan
+      author: jeswins
+      changes:
+        - createTable:
+            tableName: LOAN
+            columns:
+              - column: {name: LOAN_ID, type: NUMBER(19), autoIncrement: true, constraints: {primaryKey: true, nullable: false}}
+              - column: {name: TENANT_ID, type: VARCHAR2(50), constraints: {nullable: false}}
+              - column: {name: BORROWER_ID, type: NUMBER(19), constraints: {nullable: false, foreignKeyName: FK_LOAN_BORROWER, references: BORROWER(BORROWER_ID)}}
+              - column: {name: PRINCIPAL, type: "NUMBER(14,2)", constraints: {nullable: false}}
+              - column: {name: RATE_PCT, type: "NUMBER(5,2)", constraints: {nullable: false}}
+              - column: {name: START_DATE, type: DATE}
+              - column: {name: STATUS, type: VARCHAR2(10), constraints: {nullable: false}}
+              - column: {name: BALANCE, type: "NUMBER(14,2)"}
+              - column: {name: BALANCE_DERIVED, type: NUMBER(1), defaultValueNumeric: 0}
+        - sql:
+            sql: ALTER TABLE LOAN ADD CONSTRAINT CK_LOAN_STATUS CHECK (STATUS IN ('ACTIVE','CLOSED','DEFAULT'))
+  - changeSet:
+      id: 001-payment
+      author: jeswins
+      changes:
+        - createTable:
+            tableName: PAYMENT
+            columns:
+              - column: {name: PAYMENT_ID, type: NUMBER(19), autoIncrement: true, constraints: {primaryKey: true, nullable: false}}
+              - column: {name: TENANT_ID, type: VARCHAR2(50), constraints: {nullable: false}}
+              - column: {name: LOAN_ID, type: NUMBER(19), constraints: {nullable: false, foreignKeyName: FK_PAYMENT_LOAN, references: LOAN(LOAN_ID)}}
+              - column: {name: AMOUNT, type: "NUMBER(14,2)", constraints: {nullable: false}}
+              - column: {name: PAYMENT_TYPE, type: VARCHAR2(10), defaultValue: PAYMENT, constraints: {nullable: false}}
+              - column: {name: PAID_ON, type: DATE}
+        - createIndex:
+            tableName: PAYMENT
+            indexName: IX_PAYMENT_LOAN
+            columns:
+              - column: {name: LOAN_ID}

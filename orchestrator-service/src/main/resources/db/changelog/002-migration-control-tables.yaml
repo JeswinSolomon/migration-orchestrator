@@ -1,0 +1,74 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-mig-run
+      author: jeswins
+      changes:
+        - createTable:
+            tableName: MIG_RUN
+            columns:
+              - column: {name: RUN_ID, type: NUMBER(19), autoIncrement: true, constraints: {primaryKey: true, nullable: false}}
+              - column: {name: TENANT_ID, type: VARCHAR2(50), constraints: {nullable: false}}
+              - column: {name: STATE, type: VARCHAR2(30), constraints: {nullable: false}}
+              - column: {name: STARTED_AT, type: TIMESTAMP, defaultValueComputed: SYSTIMESTAMP}
+              - column: {name: UPDATED_AT, type: TIMESTAMP}
+              - column: {name: APPROVED_BY, type: VARCHAR2(100)}
+  - changeSet:
+      id: 002-mig-batch
+      author: jeswins
+      changes:
+        - createTable:
+            tableName: MIG_BATCH
+            columns:
+              - column: {name: BATCH_ID, type: NUMBER(19), autoIncrement: true, constraints: {primaryKey: true, nullable: false}}
+              - column: {name: RUN_ID, type: NUMBER(19), constraints: {nullable: false, foreignKeyName: FK_BATCH_RUN, references: MIG_RUN(RUN_ID)}}
+              - column: {name: ENTITY, type: VARCHAR2(30), constraints: {nullable: false}}
+              - column: {name: FROM_ID, type: NUMBER(19)}
+              - column: {name: TO_ID, type: NUMBER(19)}
+              - column: {name: ROWS_READ, type: NUMBER(10), defaultValueNumeric: 0}
+              - column: {name: ROWS_LOADED, type: NUMBER(10), defaultValueNumeric: 0}
+              - column: {name: ROWS_QUARANTINED, type: NUMBER(10), defaultValueNumeric: 0}
+              - column: {name: STATUS, type: VARCHAR2(20), constraints: {nullable: false}}
+  - changeSet:
+      id: 002-mig-exception
+      author: jeswins
+      changes:
+        - createTable:
+            tableName: MIG_EXCEPTION
+            columns:
+              - column: {name: EXCEPTION_ID, type: NUMBER(19), autoIncrement: true, constraints: {primaryKey: true, nullable: false}}
+              - column: {name: RUN_ID, type: NUMBER(19), constraints: {nullable: false}}
+              - column: {name: ENTITY, type: VARCHAR2(30), constraints: {nullable: false}}
+              - column: {name: LEGACY_ID, type: VARCHAR2(50)}
+              - column: {name: REASON_CODE, type: VARCHAR2(40), constraints: {nullable: false}}
+              - column: {name: RAW_PAYLOAD, type: CLOB}
+              - column: {name: RESOLVED, type: NUMBER(1), defaultValueNumeric: 0}
+              - column: {name: CREATED_AT, type: TIMESTAMP, defaultValueComputed: SYSTIMESTAMP}
+  - changeSet:
+      id: 002-mig-id-xref
+      author: jeswins
+      changes:
+        - createTable:
+            tableName: MIG_ID_XREF
+            columns:
+              - column: {name: TENANT_ID, type: VARCHAR2(50), constraints: {nullable: false}}
+              - column: {name: ENTITY, type: VARCHAR2(30), constraints: {nullable: false}}
+              - column: {name: LEGACY_ID, type: VARCHAR2(50), constraints: {nullable: false}}
+              - column: {name: NEW_ID, type: NUMBER(19), constraints: {nullable: false}}
+              - column: {name: SOURCE_VERSION, type: NUMBER(19), defaultValueNumeric: 0}
+        - addPrimaryKey:
+            tableName: MIG_ID_XREF
+            columnNames: TENANT_ID, ENTITY, LEGACY_ID
+            constraintName: PK_MIG_ID_XREF
+  - changeSet:
+      id: 002-mig-audit
+      author: jeswins
+      changes:
+        - createTable:
+            tableName: MIG_AUDIT
+            columns:
+              - column: {name: AUDIT_ID, type: NUMBER(19), autoIncrement: true, constraints: {primaryKey: true, nullable: false}}
+              - column: {name: RUN_ID, type: NUMBER(19)}
+              - column: {name: ACTOR, type: VARCHAR2(100), constraints: {nullable: false}}
+              - column: {name: ACTION, type: VARCHAR2(60), constraints: {nullable: false}}
+              - column: {name: DETAIL, type: VARCHAR2(2000)}
+              - column: {name: CREATED_AT, type: TIMESTAMP, defaultValueComputed: SYSTIMESTAMP}

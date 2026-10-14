@@ -1,0 +1,4 @@
+borrower_id,full_name,email,phone,dob
+1,ANA SMITH,ana@example.com,(555) 0101,1990-05-01
+2,Ben Patel,,555-0100,03/15/1985
+3,Chen Kim,c@example.com,,05-Jan-72

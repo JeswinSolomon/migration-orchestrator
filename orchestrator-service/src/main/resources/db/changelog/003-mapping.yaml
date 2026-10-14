@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-mig-mapping
+      author: jeswins
+      changes:
+        - createTable:
+            tableName: MIG_MAPPING
+            columns:
+              - column: {name: MAPPING_ID, type: NUMBER(19), autoIncrement: true, constraints: {primaryKey: true, nullable: false}}
+              - column: {name: RUN_ID, type: NUMBER(19), constraints: {nullable: false}}
+              - column: {name: SOURCE_COL, type: VARCHAR2(100), constraints: {nullable: false}}
+              - column: {name: TARGET_COL, type: VARCHAR2(100), constraints: {nullable: false}}
+              - column: {name: CONFIDENCE, type: "NUMBER(4,3)"}
+              - column: {name: METHOD, type: VARCHAR2(30)}
+              - column: {name: REASON, type: VARCHAR2(500)}
+              - column: {name: REQUIRES_REVIEW, type: NUMBER(1), defaultValueNumeric: 1}
+              - column: {name: DECISION, type: VARCHAR2(20), defaultValue: PENDING, constraints: {nullable: false}}
+              - column: {name: DECIDED_BY, type: VARCHAR2(100)}
+              - column: {name: DECIDED_AT, type: TIMESTAMP}
+        - addUniqueConstraint:
+            tableName: MIG_MAPPING
+            columnNames: RUN_ID, SOURCE_COL
+            constraintName: UQ_MIG_MAPPING_RUN_SRC

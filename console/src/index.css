@@ -1,0 +1,30 @@
+:root { font-family: system-ui, sans-serif; color: #1f2937; background: #f8fafc; }
+body { margin: 0; }
+main { max-width: 1100px; margin: 0 auto; }
+h1 { font-size: 1.5rem; }
+table { border-collapse: collapse; width: 100%; margin: 8px 0 16px; background: #fff; border-radius: 8px; overflow: hidden; }
+th, td { border-bottom: 1px solid #e5e7eb; padding: 8px 12px; text-align: left; }
+th { background: #f1f5f9; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; color: #475569; }
+tbody tr:hover { background: #f8fafc; }
+button { padding: 6px 14px; margin-right: 8px; cursor: pointer; border: 1px solid #cbd5e1; background: #fff; border-radius: 6px; }
+button:hover:not(:disabled) { background: #eff6ff; border-color: #2563eb; }
+button:focus-visible, input:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
+button:disabled { cursor: not-allowed; opacity: 0.5; }
+input { padding: 6px 10px; margin-right: 8px; border: 1px solid #cbd5e1; border-radius: 6px; }
+.error { background: #fde8e8; border: 1px solid #f5b5b5; padding: 8px 12px; border-radius: 6px; margin: 8px 0; }
+.card { border: 1px solid #e2e8f0; background: #fff; border-radius: 10px; padding: 12px 16px; margin: 8px; min-width: 180px; }
+.ok { color: #15803d; } .bad { color: #b91c1c; } .warn { background: #fff7e0; padding: 6px 10px; border-radius: 6px; }
+.hint { color: #64748b; font-size: 0.85rem; margin: 4px 0 8px; }
+nav { margin: 12px 8px; border-bottom: 1px solid #e2e8f0; }
+nav button { border: none; border-bottom: 3px solid transparent; border-radius: 0; background: none; }
+nav button.active { font-weight: 600; border-bottom-color: #2563eb; }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
+.badge-active { background: #dbeafe; color: #1d4ed8; }
+.badge-ok { background: #dcfce7; color: #15803d; }
+.badge-bad { background: #fee2e2; color: #b91c1c; }
+.stepper { display: flex; flex-wrap: wrap; gap: 4px 0; list-style: none; padding: 0; margin: 12px 0; }
+.step { display: flex; align-items: center; gap: 6px; margin-right: 14px; color: #94a3b8; font-size: 0.8rem; }
+.step .dot { width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #e2e8f0; font-weight: 600; }
+.step.done { color: #15803d; } .step.done .dot { background: #dcfce7; }
+.step.current { color: #1d4ed8; font-weight: 700; } .step.current .dot { background: #2563eb; color: #fff; }
+input[aria-label=Symptom] { width: 360px; max-width: 90%; }

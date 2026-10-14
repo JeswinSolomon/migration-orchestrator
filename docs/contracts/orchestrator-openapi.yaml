@@ -1,0 +1,70 @@
+openapi: 3.0.3
+info:
+  title: Migration Orchestrator API
+  version: 0.1.0
+paths:
+  /api/runs:
+    post:
+      summary: Create a migration run
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateRun'}
+      responses:
+        '201': {description: Created, content: {application/json: {schema: {$ref: '#/components/schemas/Run'}}}}
+    get:
+      summary: List runs
+      responses:
+        '200': {description: OK, content: {application/json: {schema: {type: array, items: {$ref: '#/components/schemas/Run'}}}}}
+  /api/runs/{runId}:
+    get:
+      summary: Get run with progress
+      parameters: [{name: runId, in: path, required: true, schema: {type: integer, format: int64}}]
+      responses:
+        '200': {description: OK, content: {application/json: {schema: {$ref: '#/components/schemas/Run'}}}}
+        '404': {description: Not found}
+  /api/runs/{runId}/transitions:
+    post:
+      summary: Request a state transition (pre-checks run first)
+      parameters: [{name: runId, in: path, required: true, schema: {type: integer, format: int64}}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/TransitionRequest'}
+      responses:
+        '200': {description: Transition accepted}
+        '409': {description: Pre-check failed or illegal transition}
+        '403': {description: Approval required}
+  /api/runs/{runId}/exceptions:
+    get:
+      summary: List quarantined rows
+      parameters: [{name: runId, in: path, required: true, schema: {type: integer, format: int64}}]
+      responses:
+        '200': {description: OK}
+  /api/runs/{runId}/reconciliation:
+    get:
+      summary: Reconciliation report (counts, sums, per-loan diffs)
+      parameters: [{name: runId, in: path, required: true, schema: {type: integer, format: int64}}]
+      responses:
+        '200': {description: OK}
+components:
+  schemas:
+    CreateRun:
+      type: object
+      required: [tenantId]
+      properties:
+        tenantId: {type: string}
+    Run:
+      type: object
+      properties:
+        runId: {type: integer, format: int64}
+        tenantId: {type: string}
+        state: {type: string, enum: [PLANNED, PROFILED, INITIAL_LOAD, CDC_SYNC, SHADOW_VERIFY, READY, FREEZE, FINAL_SYNC, SWITCHED, MONITOR, DONE, ROLLED_BACK]}
+    TransitionRequest:
+      type: object
+      required: [target]
+      properties:
+        target: {type: string}
+        approvedBy: {type: string, description: Required for SWITCHED}
