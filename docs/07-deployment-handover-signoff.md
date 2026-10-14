@@ -110,7 +110,7 @@ See test report section 5 (G1-G7) and security review findings S1-S9. The blocke
 | 8 | CDC and final sync | | **Open (G4)** |
 | 9 | Authentication and roles | | **Done for demo** (Basic auth, 4 roles; OIDC/JWT for production) |
 | 10 | Customer approver and negative-amount owner named | | **Open** |
-| 11 | CI green on GitHub | https://github.com/JeswinSolomon/migration-orchestrator (Actions) | **Done** |
+| 11 | CI green on GitHub | https://github.com/jeswinstaynes01-dev/migration-orchestrator (Actions) | **Done** |
 | 12 | Cross-tenant isolation tested | `TenantIsolationTest` | Done on H2 |
 | 13 | Demo script | `08-demo-script.md` | Done |
 
