@@ -29,7 +29,9 @@ Open http://localhost:5173. Generate data first with the generator in `legacy-da
 
 | Variable | Used by | Default | Note |
 |---|---|---|---|
-| `TARGET_DB_URL`, `TARGET_DB_USER`, `TARGET_DB_PASSWORD` | orchestrator | Oracle localhost, user/pass `orchestrator` | **Override in every real environment** (security S2) |
+| `TARGET_DB_URL`, `TARGET_DB_USER`, `TARGET_DB_PASSWORD` | orchestrator | none for user/password; startup fails without them | Required in every environment (security S2) |
+| `MIGRATION_USERS` | orchestrator | none; startup fails without it | `name:pass:ROLE\|ROLE;...` with roles OPERATOR, REVIEWER, APPROVER, READER (security S1) |
+| `ORCHESTRATOR_USER`, `ORCHESTRATOR_PASSWORD` | ai-service | none | A READER account the agent uses to read runs |
 | `MIGRATION_LEGACY_DIR` | orchestrator | `../legacy-data/data` | CSV exports, read as ISO-8859-1 |
 | `AI_SERVICE_URL` | orchestrator | `http://localhost:8000` | |
 | `migration.ai-max-attempts`, `migration.ai-backoff-ms` | orchestrator | 3, 200 | Retry on 5xx and network errors only |
@@ -92,7 +94,7 @@ Follow `04-cutover-runbook.md`. Rollback is allowed only from FREEZE, FINAL_SYNC
 
 ## 5. Known gaps and risks at handover
 
-See test report section 5 (G1-G7) and security review findings S1-S9. The three that block production: **S1 no authentication, G1 untested on Oracle, G4 CDC/final-sync not built.**
+See test report section 5 (G1-G7) and security review findings S1-S9. The blockers for production: **G1 untested on Oracle, G4 CDC/final-sync not built**, and S1 is only partly closed (Basic auth in place, OIDC/JWT still to do).
 
 ## 6. Signoff checklist
 
@@ -106,7 +108,7 @@ See test report section 5 (G1-G7) and security review findings S1-S9. The three 
 | 6 | Security review | `06-security-review.md` | Done, **not approved for real data** |
 | 7 | Rehearsal on real Oracle | | **Open (G1)** |
 | 8 | CDC and final sync | | **Open (G4)** |
-| 9 | Authentication and roles | | **Open (S1)** |
+| 9 | Authentication and roles | | **Done for demo** (Basic auth, 4 roles; OIDC/JWT for production) |
 | 10 | Customer approver and negative-amount owner named | | **Open** |
 | 11 | CI green on GitHub | | **Open (G6)** |
 

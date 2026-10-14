@@ -4,7 +4,7 @@ Scope: orchestrator-service, ai-service, console, as of 2026-10-14. This is a se
 
 ## 1. Summary
 
-The design choices that matter most are sound (read-only agent, human approval, PII-free LLM prompts, parameterised SQL, no raw rows in the API). **The biggest gap is that there is no authentication or authorisation at all**, so the "approver" is a typed name, not a verified identity. That must be fixed before any real customer data is used.
+The design choices that matter most are sound (read-only agent, human approval, PII-free LLM prompts, parameterised SQL, no raw rows in the API). **Update:** the biggest gap, no authentication, is now closed in code (S1, S2 below): Basic auth with roles, and the approver is taken from the login. The finding rows are kept as the original record.
 
 ## 2. Controls in place (with proof)
 
@@ -25,8 +25,8 @@ The design choices that matter most are sound (read-only agent, human approval, 
 
 | # | Severity | Finding | Fix |
 |---|---|---|---|
-| S1 | High | No authn/z on any endpoint. Anyone who can reach port 8081 can create runs, load, switch, or roll back. `approvedBy` and `decidedBy` are free text and can be spoofed | Add Spring Security with OIDC/JWT; take the actor from the token, require roles (operator, reviewer, approver); never accept the name from the request body |
-| S2 | High | Default DB password `orchestrator/orchestrator` in `application.yml` and the AI service/agent reach the orchestrator unauthenticated | Remove defaults so startup fails without secrets; service-to-service token for the agent |
+| S1 | High, **fixed in code** | No authn/z on any endpoint (original finding). Now: stateless Basic auth, users from `MIGRATION_USERS`, roles OPERATOR/REVIEWER/APPROVER/READER, actor taken from the login, SWITCHED needs APPROVER. Production should still move to OIDC/JWT | Add Spring Security with OIDC/JWT; take the actor from the token, require roles (operator, reviewer, approver); never accept the name from the request body |
+| S2 | High, **fixed in code** | DB password default removed (startup fails without `TARGET_DB_USER`/`TARGET_DB_PASSWORD`); the agent calls the orchestrator with a READER service account (`ORCHESTRATOR_USER`/`ORCHESTRATOR_PASSWORD`) | Remove defaults so startup fails without secrets; service-to-service token for the agent |
 | S3 | Medium | No cross-tenant protection test: tenant isolation relies on every query remembering the `TENANT_ID` filter | Add a test that seeds two tenants and proves one never sees the other; consider Oracle VPD |
 | S4 | Medium | `MIG_EXCEPTION.RAW_PAYLOAD` stores full legacy rows (PII) unencrypted | Encrypt or redact at rest, set retention, restrict DB access |
 | S5 | Medium | Actuator `metrics` is exposed without auth | Expose only to the monitoring network or secure it |
@@ -37,4 +37,4 @@ The design choices that matter most are sound (read-only agent, human approval, 
 
 ## 4. Verdict
 
-Fine for a demo on synthetic data. **Not approved for real customer data** until S1 and S2 are closed and S3 and S4 are decided.
+Fine for a demo on synthetic data. **Not approved for real customer data** until S3 and S4 are decided and Basic auth is replaced by OIDC/JWT (S1 and S2 are closed in code).
