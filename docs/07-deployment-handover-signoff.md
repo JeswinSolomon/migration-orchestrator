@@ -102,7 +102,7 @@ See test report section 5 (G1-G7) and security review findings S1-S9. The blocke
 |---|---|---|---|
 | 1 | Requirements agreed | `01-requirements.md` | Done |
 | 2 | Architecture and ADRs | `03-architecture.md` | Done |
-| 3 | Automated tests pass | `05-test-strategy-and-results.md` (75 checks + 16 evals) | Done on H2 |
+| 3 | Automated tests pass | `05-test-strategy-and-results.md` (89 checks + 16 evals) | Done on H2 |
 | 4 | Rollback drill rehearsed | `CutoverDrillTest`, `04-cutover-runbook.md` | Done on H2 |
 | 5 | Data reconciles | 66k-row run, sums tie out | Done on H2 |
 | 6 | Security review | `06-security-review.md` | Done, **not approved for real data** |
@@ -110,6 +110,8 @@ See test report section 5 (G1-G7) and security review findings S1-S9. The blocke
 | 8 | CDC and final sync | | **Open (G4)** |
 | 9 | Authentication and roles | | **Done for demo** (Basic auth, 4 roles; OIDC/JWT for production) |
 | 10 | Customer approver and negative-amount owner named | | **Open** |
-| 11 | CI green on GitHub | | **Open (G6)** |
+| 11 | CI green on GitHub | https://github.com/JeswinSolomon/migration-orchestrator (Actions) | **Done** |
+| 12 | Cross-tenant isolation tested | `TenantIsolationTest` | Done on H2 |
+| 13 | Demo script | `08-demo-script.md` | Done |
 
 Signoff: demo-ready / **not production-ready**. Customer: ____________ Date: ______  Engineer: ____________ Date: ______

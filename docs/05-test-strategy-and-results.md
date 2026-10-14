@@ -8,13 +8,13 @@ Status date: 2026-10-14. Everything below was run on a developer machine with an
 | Layer | Tool | Count | What it proves |
 |---|---|---|---|
 | Unit | JUnit (`LegacyValueParserTest`, `RunStateTest`) | 8 | Value parsing, state-machine rules |
-| Service / integration | JUnit + SpringBootTest + MockMvc + H2 | 21 | Loader, quarantine, reconciliation, mapping gate, shadow diff, cutover pre-checks, rollback drill, metrics, AI-client retry |
-| AI service | pytest | 25 | Mapping guardrails, agent tools, evals, LLM HTTP round trip, endpoint errors |
+| Service / integration | JUnit + SpringBootTest + MockMvc + H2 | 28 | Loader, quarantine, reconciliation, mapping gate, shadow diff, cutover pre-checks, rollback drill, metrics, AI-client retry, authentication and roles, tenant isolation |
+| AI service | pytest | 27 | Mapping guardrails, agent tools, evals, LLM HTTP round trip, endpoint errors |
 | Agent evals | `python -m app.agent.evals` | 16 scenarios | Root-cause accuracy 16/16, includes "UNKNOWN" and "NO_ISSUE" negatives |
-| Console | Vitest + Testing Library | 19 | Rendering, approval gate, error states, polling, diagnose panel, stepper |
-| End to end | Playwright (real browser) | 2 | Create run, advance, pre-check failure, ask the agent, over 3 real services |
+| Console | Vitest + Testing Library | 23 | Rendering, login gate, approval gate, error states, polling, diagnose panel, stepper |
+| End to end | Playwright (real browser) | 3 | Wrong password refused, create run, advance, pre-check failure, ask the agent, over 3 real services |
 
-Total automated checks: 29 Java + 25 Python + 19 console + 2 e2e = **75**, plus the 16-scenario eval.
+Total automated checks: 36 Java + 27 Python + 23 console + 3 e2e = **89**, plus the 16-scenario eval.
 
 ## 2. Test types and where they live
 
@@ -60,5 +60,5 @@ cd console              ; npm test ; npm run lint ; npm run build ; npm run e2e
 | G3 | No load test at production volume (no k6 here) | Unknown behaviour at tens of millions of rows | Run chunked-load test on a real DB; measure rows/s and lock time |
 | G4 | CDC, Kafka, DLQ not built (blocked by no Docker) | Final-sync correctness untested | Build with Debezium once Docker or Rancher Desktop exists |
 | G5 | No real LLM tried | Narrative and mapping quality unmeasured | Needs Ollama model or hosted endpoint; the HTTP path itself is tested |
-| G6 | CI workflow never ran on GitHub | Config typos possible | Push and watch the first run |
+| G6 | ~~CI workflow never ran on GitHub~~ Closed: CI (unit tests and e2e) is green on GitHub | None | Keep watching runs |
 | G7 | No concurrency test for two callers racing the same transition | Guard is untested under real contention | Add a two-thread test on one run |
