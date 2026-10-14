@@ -49,6 +49,44 @@ paths:
       parameters: [{name: runId, in: path, required: true, schema: {type: integer, format: int64}}]
       responses:
         '200': {description: OK}
+  /api/runs/{runId}/load:
+    post:
+      summary: Run the initial bulk load from the legacy extract
+      parameters: [{name: runId, in: path, required: true, schema: {type: integer, format: int64}}]
+      responses:
+        '200': {description: Load summary}
+  /api/runs/{runId}/shadow-diff:
+    get:
+      summary: Shadow-read comparison of source and target
+      parameters: [{name: runId, in: path, required: true, schema: {type: integer, format: int64}}]
+      responses:
+        '200': {description: OK}
+  /api/runs/{runId}/audit:
+    get:
+      summary: Audit trail for the run
+      parameters: [{name: runId, in: path, required: true, schema: {type: integer, format: int64}}]
+      responses:
+        '200': {description: OK}
+  /api/runs/{runId}/mappings:
+    get:
+      summary: List mappings and their review status
+      parameters: [{name: runId, in: path, required: true, schema: {type: integer, format: int64}}]
+      responses:
+        '200': {description: OK}
+  /api/runs/{runId}/mappings/suggest:
+    post:
+      summary: Ask the AI service to suggest field mappings
+      parameters: [{name: runId, in: path, required: true, schema: {type: integer, format: int64}}]
+      responses:
+        '200': {description: OK}
+  /api/runs/{runId}/mappings/{source}:
+    put:
+      summary: Approve or reject one mapping (reviewer role)
+      parameters:
+        - {name: runId, in: path, required: true, schema: {type: integer, format: int64}}
+        - {name: source, in: path, required: true, schema: {type: string}}
+      responses:
+        '200': {description: OK}
 components:
   schemas:
     CreateRun:
