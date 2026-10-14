@@ -1,6 +1,7 @@
 package com.example.migration.run;
 
 import com.example.migration.load.LoadSummary;
+import com.example.migration.load.ProfileService;
 import com.example.migration.load.ShadowVerifier;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +27,18 @@ public class RunController {
 
   private final RunService runs;
   private final ReconciliationService reconciliation;
+  private final ProfileService profiles;
 
-  public RunController(RunService runs, ReconciliationService reconciliation) {
+  public RunController(RunService runs, ReconciliationService reconciliation, ProfileService profiles) {
     this.runs = runs;
     this.reconciliation = reconciliation;
+    this.profiles = profiles;
+  }
+
+  @GetMapping("/{runId}/profile")
+  public ProfileService.Profile profile(@PathVariable long runId) throws java.io.IOException {
+    runs.get(runId);
+    return profiles.profile();
   }
 
   @PostMapping

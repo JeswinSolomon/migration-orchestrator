@@ -49,6 +49,12 @@ paths:
       parameters: [{name: runId, in: path, required: true, schema: {type: integer, format: int64}}]
       responses:
         '200': {description: OK}
+  /api/runs/{runId}/profile:
+    get:
+      summary: Pre-migration data profile (null rates, duplicates, date formats; counts only, no raw values)
+      parameters: [{name: runId, in: path, required: true, schema: {type: integer, format: int64}}]
+      responses:
+        '200': {description: OK}
   /api/runs/{runId}/load:
     post:
       summary: Run the initial bulk load from the legacy extract
