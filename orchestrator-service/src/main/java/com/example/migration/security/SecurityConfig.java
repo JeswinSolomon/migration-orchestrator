@@ -9,7 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 /**
  * Roles: READER (view), OPERATOR (create, load, advance), REVIEWER (decide mappings), APPROVER (switch).
@@ -34,7 +35,8 @@ public class SecurityConfig {
     http
       .csrf(csrf -> csrf.disable()) // stateless API with Basic auth, no cookies to forge
       .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-      .httpBasic(Customizer.withDefaults())
+      // No WWW-Authenticate header: browsers would otherwise open their own credentials dialog on 401
+      .httpBasic(basic -> basic.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
       .authorizeHttpRequests(a -> a
         .requestMatchers(GET, "/actuator/health", "/actuator/health/**").permitAll()
         .requestMatchers(POST, "/api/runs").hasRole("OPERATOR")

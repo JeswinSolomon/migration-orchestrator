@@ -12,7 +12,7 @@ test('nobody sees runs without signing in, and a wrong password is refused', asy
   await page.goto('/')
   await expect(page.getByRole('button', { name: 'Create run' })).toHaveCount(0)
   await signIn(page, 'e2e', 'wrong-password')
-  await expect(page.getByRole('alert')).toContainText('sign in again')
+  await expect(page.getByRole('alert')).toContainText('Wrong username or password')
 })
 
 test('operator creates a run, advances it and asks the agent', async ({ page }) => {
